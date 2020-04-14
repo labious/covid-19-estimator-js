@@ -1,3 +1,17 @@
+const data = {
+  region: {
+    name: 'Africa',
+    avgAge: 19.7,
+    avgDailyIncomeInUSD: 5,
+    avgDailyIncomePopulation: 0.71
+  },
+  periodType: 'days',
+  timeToElapse: 58,
+  reportedCases: 465,
+  population: 66622705,
+  totalHospitalBeds: 1380614
+};
+
 const bedsAvailableForCovid = 0.35 * data.totalHospitalBeds;
 const impactFactor = 10;
 const severeImpactFactor = 50;
