@@ -1,18 +1,3 @@
-const data = {
-  region: {
-    name: 'Africa',
-    avgAge: 19.7,
-    avgDailyIncomeInUSD: 5,
-    avgDailyIncomePopulation: 0.71
-  },
-  periodType: 'days',
-  timeToElapse: 58,
-  reportedCases: 674,
-  population: 66622705,
-  totalHospitalBeds: 1380614
-};
-
-const requestedTime = data.timeToElapse;
 const bedsAvailableForCovid = 0.35 * data.totalHospitalBeds;
 const impactFactor = 10;
 const severeImpactFactor = 50;
@@ -22,9 +7,6 @@ const ventilatorRecquired = 0.02;
 const weekDays = 7;
 const monthDays = 30;
 const daysToDouble = 3;
-const workingPopulation = data.region.avgDailyIncomePopulation;
-const dollarEarning = data.region.avgDailyIncomeInUSD;
-const periodX = data.periodType;
 
 const factor = (time, periodType) => {
   let returnValue;
@@ -35,10 +17,11 @@ const factor = (time, periodType) => {
   }
   return returnValue;
 };
-const powerComputation = 2 ** factor(requestedTime, periodX);
+
+const powerComputation = 2 ** factor(data.timeToElapse, data.periodType);
 const impactcodeCleaner = data.reportedCases * impactFactor * powerComputation;
 const severeImpactCodeCleaner = data.reportedCases * severeImpactFactor * powerComputation;
-const dollarCalc = workingPopulation * dollarEarning;
+const dollarCalc = data.region.avgDailyIncomePopulation * data.region.avgDailyIncomeInUSD;
 
 const impact = {
   currentlyInfected: data.reportedCases * impactFactor,
@@ -48,7 +31,7 @@ const impact = {
       - impactcodeCleaner * hospitilisedCases),
   casesForICUByRequestedTime: Math.trunc(impactcodeCleaner * IcuRequired),
   casesForVentilatorsByRequestedTime: Math.trunc(impactcodeCleaner * ventilatorRecquired),
-  dollarsInFlight: Math.trunc(dollarCalc * impactcodeCleaner * requestedTime)
+  dollarsInFlight: Math.trunc(dollarCalc * impactcodeCleaner * data.timeToElapse)
 };
 
 const severeImpact = {
@@ -59,12 +42,11 @@ const severeImpact = {
       - severeImpactCodeCleaner * hospitilisedCases),
   casesForICUByRequestedTime: Math.trunc(severeImpactCodeCleaner * IcuRequired),
   casesForVentilatorsByRequestedTime: Math.trunc(severeImpactCodeCleaner * ventilatorRecquired),
-  dollarsInFlight: Math.trunc(dollarCalc * severeImpactCodeCleaner * requestedTime)
+  dollarsInFlight: Math.trunc(dollarCalc * severeImpactCodeCleaner * data.timeToElapse)
 };
 
 const covid19ImpactEstimator = (dataInput) => {
   const input = dataInput;
-
   return {
     input,
     impact,
