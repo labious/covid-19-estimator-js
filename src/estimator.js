@@ -62,12 +62,13 @@ const severeImpact = {
   dollarsInFlight: Math.trunc(dollarCalc * severeImpactCodeCleaner * requestedTime)
 };
 
-const covid19ImpactEstimator = (data) => {
-  const output = {
-    data,
+const covid19ImpactEstimator = (dataInput) => {
+  const input = dataInput;
+
+  return {
+    input,
     impact,
     severeImpact
   };
-  return output;
 };
 export default covid19ImpactEstimator;
